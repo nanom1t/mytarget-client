@@ -73,12 +73,40 @@ class MyTargetClient
       @browser.div(:class => 'create-pad-groups-page__main-button').span(:class => 'main-button-new').click
 
       # Check if application created
-      @browser.div(:class => 'pad-groups-stat-page__pad-groups-list-wrapper').wait_until_present
+      @browser.div(:class => 'pad-groups-stat-page__pad-groups-list-wrapper').wait_until_present(timeout=30)
       if @browser.div(:class => 'pad-groups-stat-page__pad-groups-list-wrapper').a(:text => app_name).exists?
-        puts '*** The app with name ' + app_name + ' has been created'
+        app_id = @browser.div(:class => 'pad-groups-stat-page__pad-groups-list-wrapper').link(:text => app_name).href.split('/').last
+        puts '*** Created app with name ' + app_name + ' - ' + app_id
+        slot_id = get_adunit_slot_id(app_id, adunit_name)
+        puts '*** Created slot with name ' + adunit_name + ' - ' + slot_id
+
+        { :app_name => app_name, :app_url => app_url, :app_id => app_id, :slots => [{ :slot_id => slot_id }] }
       else
         puts '*** Something went wrong during app creation'
       end
+    else
+      puts '*** User is not logined'
+    end
+  end
+
+  def create_adunit(app_id, adunit_name, adunit_type)
+    if signed_in?
+      # Create new adunit
+      @browser.goto(MYTARGET_URL + 'pad_groups' + app_id + '/create')
+      @browser.div(:class => 'pad-setting').wait_until_present
+    else
+      puts '*** User is not logined'
+    end
+  end
+
+  def get_adunit_slot_id(app_id, adunit_name)
+    if signed_in?
+      # Create new adunit
+      @browser.goto(MYTARGET_URL + 'pad_groups/' + app_id)
+      @browser.div(:class => 'pads-stat-page__pads-list-wrapper').wait_until_present(timeout=30)
+      @browser.a(:class => 'pads-list__link', :text => adunit_name).click
+      @browser.div(:class => 'pad-stat-page__partner-instruction').wait_until_present
+      @browser.div(:class => 'pad-stat-page__partner-instruction').p(:class => 'js-slot-id').text.split(':').last.strip
     else
       puts '*** User is not logined'
     end
