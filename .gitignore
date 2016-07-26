@@ -25,3 +25,5 @@ doc/
 # Vagrant and Chef
 /.vagrant
 /cookbooks
+
+info.txt
