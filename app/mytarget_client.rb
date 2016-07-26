@@ -40,6 +40,8 @@ class MyTargetClient
           @browser.windows.first.use
         end
       end
+    else
+      puts '*** Invalid user or password format'
     end
   end
 end
