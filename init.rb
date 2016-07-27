@@ -1,9 +1,9 @@
 require_relative 'app/mytarget_client'
 require 'pp'
 
-MYTARGET_LOGIN = 'ruby_rails@mail.ru'
+MYTARGET_LOGIN = 'ruby_demo@mail.ru' #'ruby_rails@mail.ru'
 MYTARGET_PASSWORD = '1qazxsw2!@$$'
-APP_NAME = 'Angry Birds 3'
+APP_NAME = 'Angry Birds'
 APP_URL = 'https://itunes.apple.com/en/app/angry-birds/id343200656?mt=8'
 
 mytarget_client = MyTargetClient.new
