@@ -4,14 +4,17 @@ describe "MyTarget" do
   subject { page }
 
   WATIR_DEFAULT_TIMEOUT = 90
+  MYTARGET_URL = 'https://target.my.com/'
   MYTARGET_LOGIN = 'ruby_rails@mail.ru'
   MYTARGET_PASSWORD = '1qazxsw2!@$$'
-  APP_NAME = 'Angry Birds'
+  APP_NAME = 'Angry Birds Test'
   APP_URL = 'https://itunes.apple.com/en/app/angry-birds/id343200656?mt=8'
+  ADUNIT_STANDART_NAME = 'Standart adunit name'
+  ADUNIT_FULLSCREEN_NAME = 'Fullscreen adunit name'
 
   describe "Authorization" do
     it "should has login button" do
-      goto "https://target.my.com/"
+      goto MYTARGET_URL
       expect(span(:class =>'js-head-log-in')).to be_present.within(WATIR_DEFAULT_TIMEOUT)
       span(:class => 'js-head-log-in').click
     end
@@ -47,6 +50,61 @@ describe "MyTarget" do
         expect(div(:class, 'b-form__error')).to_not be_present.within(10)
       end
 
+      it "should has account choose option" do
+        expect(div(:class => 'accounts')).to be_present.within(WATIR_DEFAULT_TIMEOUT)
+        expect(div(:class => 'accounts__item', :data_value => MYTARGET_LOGIN)).to be_present.within(WATIR_DEFAULT_TIMEOUT)
+        div(:class => 'accounts__item', :data_value => MYTARGET_LOGIN).click
+      end
+
+      it "shoud close Mail.ru oauth window after choosing account" do
+        Watir::Wait.until { windows.size == 1 }
+        windows.first.use
+      end
+
+      it "shoud has profile info loaded" do
+        expect(div(:class => 'profile2__name')).to be_present.within(WATIR_DEFAULT_TIMEOUT)
+        expect(div(:class => 'profile2__name').text).to_not be_empty
+      end
+    end
+  end
+
+  describe "App creation page" do
+    it "should has description form" do
+      goto(MYTARGET_URL + 'create_pad_groups')
+      expect(div(:class => 'pad-setting')).to be_present.within(WATIR_DEFAULT_TIMEOUT)
+      expect(text_field(:class => 'pad-setting__description__input')).to be_present
+      expect(text_field(:class => 'pad-setting__url__input')).to be_present
+
+      text_field(:class => 'pad-setting__description__input').set(APP_NAME)
+      text_field(:class => 'pad-setting__url__input').set(APP_URL)
+    end
+
+    it "should load app url info" do
+      expect(div(:class => 'create-pad-groups-page__center-part-wrapper')).to be_present.within(WATIR_DEFAULT_TIMEOUT)
+      expect(text_field(:class => 'js-adv-block-description')).to be_present
+      expect(div(:class => 'create-pad-groups-page__main-button')).to be_present
+
+      text_field(:class => 'js-adv-block-description').set(ADUNIT_STANDART_NAME)
+      div(:class => 'create-pad-groups-page__main-button').span(:class => 'main-button-new').click
+    end
+
+    it "should created an application" do
+      expect(div(:class => 'pad-groups-stat-page__pad-groups-list-wrapper')).to be_present.within(WATIR_DEFAULT_TIMEOUT)
+      expect(div(:class => 'pad-groups-stat-page__pad-groups-list-wrapper').a(:text => APP_NAME)).to be_present
+
+      div(:class => 'pad-groups-stat-page__pad-groups-list-wrapper').a(:text => APP_NAME).click
+    end
+
+    it "should create standart ad unit" do
+      expect(div(:class => 'pads-stat-page__pads-list-wrapper')).to be_present.within(WATIR_DEFAULT_TIMEOUT)
+      expect(a(:class => 'pads-list__link', :text => ADUNIT_STANDART_NAME)).to be_present
+
+      a(:class => 'pads-list__link', :text => ADUNIT_STANDART_NAME).click
+    end
+
+    it "should have slot_id for standart ad unit" do
+      expect(div(:class => 'pad-stat-page__partner-instruction')).to be_present.within(WATIR_DEFAULT_TIMEOUT)
+      expect(div(:class => 'pad-stat-page__partner-instruction').p(:class => 'js-slot-id').text).to_not be_empty
     end
   end
 end
