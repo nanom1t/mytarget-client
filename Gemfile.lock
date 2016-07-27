@@ -1,0 +1,47 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    childprocess (0.5.9)
+      ffi (~> 1.0, >= 1.0.11)
+    commonwatir (4.0.0)
+    domain_name (0.5.20160615)
+      unf (>= 0.0.5, < 1.0.0)
+    ffi (1.9.14)
+    http-cookie (1.0.2)
+      domain_name (~> 0.5)
+    mime-types (3.1)
+      mime-types-data (~> 3.2015)
+    mime-types-data (3.2016.0521)
+    netrc (0.11.0)
+    rest-client (2.0.0)
+      http-cookie (>= 1.0.2, < 2.0)
+      mime-types (>= 1.16, < 4.0)
+      netrc (~> 0.8)
+    rubyzip (1.2.0)
+    selenium-webdriver (2.53.4)
+      childprocess (~> 0.5)
+      rubyzip (~> 1.0)
+      websocket (~> 1.0)
+    unf (0.1.4)
+      unf_ext
+    unf_ext (0.0.7.2)
+    watir (5.0.0)
+      commonwatir (~> 4)
+      watir-webdriver
+    watir-webdriver (0.9.1)
+      selenium-webdriver (>= 2.46.2)
+    websocket (1.2.3)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  rest-client
+  selenium-webdriver
+  watir
+
+RUBY VERSION
+   ruby 2.2.3p173
+
+BUNDLED WITH
+   1.12.5

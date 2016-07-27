@@ -25,3 +25,4 @@ doc/
 # Vagrant and Chef
 /.vagrant
 /cookbooks
+

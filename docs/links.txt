@@ -1,0 +1,15 @@
+http://www.layeredthoughts.com/automation/how-to-write-your-first-ruby-web-bot-in-watir-scraping-weather-com
+https://www.thoughtworks.com/insights/blog/creating-automated-test-scripts-ruby-and-watir
+http://celerity.rubyforge.org/
+https://watirwebdriver.com/chrome/
+
+http://chromedriver.storage.googleapis.com/index.html
+http://www.secretgeek.net/watir_3mins
+https://github.com/watir/watir/blob/master/README.md
+https://debian.pro/515
+
+https://www.youtube.com/watch?v=XFVXaC41Xac
+http://www.kenst.com/2015/03/installing-chromedriver-on-mac-osx/
+brew install chromedriver
+http://brewformulas.org/chromedriver
+
