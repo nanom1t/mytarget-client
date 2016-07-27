@@ -10,7 +10,7 @@ RSpec.configure do |config|
 
   # Open up the browser for each example.
   config.before :all do
-    @browser = Watir::Browser.new
+    @browser = Watir::Browser.new :chrome
   end
 
   # Close that browser after each example.

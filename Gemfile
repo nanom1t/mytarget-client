@@ -8,5 +8,6 @@ gem 'watir'
 group :test do
   # Use RSpec
   gem 'rspec'
+  # Use Watir::RSpec
   gem 'watir-rspec'
 end
