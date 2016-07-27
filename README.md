@@ -18,3 +18,7 @@ ruby init.rb
 rspec spec
 ```
 
+## Demo
+
+Working: https://youtu.be/i0fIAl0Bzv8
+Testing: https://youtu.be/ToLXX9cvZOI
