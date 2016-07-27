@@ -7,7 +7,7 @@ describe "MyTarget" do
   MYTARGET_URL = 'https://target.my.com/'
   MYTARGET_LOGIN = 'ruby_rails@mail.ru'
   MYTARGET_PASSWORD = '1qazxsw2!@$$'
-  APP_NAME = 'Angry Birds Test'
+  APP_NAME = 'Angry Birds Test 2'
   APP_URL = 'https://itunes.apple.com/en/app/angry-birds/id343200656?mt=8'
   ADUNIT_STANDART_NAME = 'Standart adunit name'
   ADUNIT_FULLSCREEN_NAME = 'Fullscreen adunit name'
@@ -103,6 +103,41 @@ describe "MyTarget" do
     end
 
     it "should have slot_id for standart ad unit" do
+      expect(div(:class => 'pad-stat-page__partner-instruction')).to be_present.within(WATIR_DEFAULT_TIMEOUT)
+      expect(div(:class => 'pad-stat-page__partner-instruction').p(:class => 'js-slot-id').text).to_not be_empty
+    end
+  end
+
+  describe "Fullscreen adunit creation" do
+    it "shoud have link to app adunits" do
+      expect(a(:class => 'bread-crumbs__item__link', :text => APP_NAME)).to be_present.within(WATIR_DEFAULT_TIMEOUT)
+      a(:class => 'bread-crumbs__item__link', :text => APP_NAME).click
+    end
+
+    it "should has create placement button" do
+      expect(a(:class => 'pads-control-panel__button_create')).to be_present.within(WATIR_DEFAULT_TIMEOUT)
+      a(:class => 'pads-control-panel__button_create').click
+    end
+
+    it "should load new placement page" do
+      expect(div(:class => 'create-pad-page__block-form-wrap')).to be_present.within(WATIR_DEFAULT_TIMEOUT)
+      expect(text_field(:class => 'js-adv-block-description')).to be_present
+      expect(div(:class => 'format-item__image_fullscreen')).to be_present
+      expect(span(:class => 'create-pad-page__save-button')).to be_present
+
+      text_field(:class => 'js-adv-block-description').set(ADUNIT_FULLSCREEN_NAME)
+      div(:class => 'format-item__image_fullscreen').click
+      span(:class => 'create-pad-page__save-button').click
+    end
+
+    it "shoud create new adunit" do
+      expect(div(:class => 'pads-stat-page__pads-list-wrapper')).to be_present.within(WATIR_DEFAULT_TIMEOUT)
+      expect(a(:class => 'pads-list__link', :text => ADUNIT_FULLSCREEN_NAME)).to be_present
+
+      a(:class => 'pads-list__link', :text => ADUNIT_FULLSCREEN_NAME).click
+    end
+
+    it "should have slot_id for fullscreen ad unit" do
       expect(div(:class => 'pad-stat-page__partner-instruction')).to be_present.within(WATIR_DEFAULT_TIMEOUT)
       expect(div(:class => 'pad-stat-page__partner-instruction').p(:class => 'js-slot-id').text).to_not be_empty
     end
