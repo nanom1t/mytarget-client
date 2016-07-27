@@ -4,6 +4,11 @@ require 'watir'
 class MyTargetClient
   MYTARGET_URL = 'https://target.my.com/'
 
+  ADUNIT_TYPE_STANDART = 'standard'
+  ADUNIT_TYPE_FULLSCREEN = 'fullscreen'
+  ADUNIT_TYPE_NATIVE = 'native'
+  ADUNIT_TYPE_REVARDED_VIDEO = 'rewarded_video'
+
   def initialize
     @signed_in = false
 
@@ -92,8 +97,24 @@ class MyTargetClient
   def create_adunit(app_id, adunit_name, adunit_type)
     if signed_in?
       # Create new adunit
-      @browser.goto(MYTARGET_URL + 'pad_groups' + app_id + '/create')
-      @browser.div(:class => 'pad-setting').wait_until_present
+      @browser.goto(MYTARGET_URL + 'pad_groups/' + app_id + '/create')
+      @browser.div(:class => 'create-pad-page__block-form-wrap').wait_until_present
+      @browser.text_field(:class => 'js-adv-block-description').set(adunit_name)
+      @browser.div(:class => 'format-item__image_' + adunit_type).click
+      @browser.span(:class => 'create-pad-page__save-button').click
+
+      # Check if adunit created
+      @browser.div(:class => 'pads-stat-page__pads-list-wrapper').wait_until_present(timeout=30)
+      if @browser.div(:class => 'pads-stat-page__pads-list-wrapper').a(:text => adunit_name).exists?
+        adunit_id = @browser.div(:class => 'pads-stat-page__pads-list-wrapper').link(:text => adunit_name).href.split('/').last
+        puts '*** Created adunit with name ' + adunit_name + ' - ' + adunit_id
+        slot_id = get_adunit_slot_id(app_id, adunit_name)
+        puts '*** Created slot with id - ' + slot_id
+
+        { :adunit_id => adunit_id, :adunit_name => adunit_name, :adunit_type => adunit_type, :slot_id => slot_id }
+      else
+        puts '*** Something went wrong during adunit creation'
+      end
     else
       puts '*** User is not logined'
     end
